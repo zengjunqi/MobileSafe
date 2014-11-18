@@ -24,6 +24,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+          <activity
+            android:name="com.zengyan.mobilesafe.HomeActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.zengyan.mobilesafe.LostFindActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.zengyan.mobilesafe.SettingActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.zengyan.mobilesafe.Setup1Activity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.zengyan.mobilesafe.Setup2Activity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.zengyan.mobilesafe.Setup3Activity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.zengyan.mobilesafe.Setup4Activity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
