@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.zengyan.mobilesafe.service.AddressService;
+import com.zengyan.mobilesafe.service.CallSmsSafeService;
 import com.zengyan.mobilesafe.ui.SettingClickView;
 import com.zengyan.mobilesafe.ui.SettingItem;
 import com.zengyan.mobilesafe.utils.ServiceUtils;
@@ -24,9 +26,13 @@ public class SettingActivity extends Activity {
 	private SettingItem siv_show_address;
 	private Intent showAddress;
 
-	// 设置归属地显示框背景
+	//黑名单拦截设置
+	private SettingItem siv_callsms_safe;
+	private Intent callSmsSafeIntent;
+	
+	
+	//设置归属地显示框背景
 	private SettingClickView scv_changebg;
-
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
@@ -34,14 +40,21 @@ public class SettingActivity extends Activity {
 		showAddress = new Intent(this, AddressService.class);
 		boolean isServiceRunning = ServiceUtils.isServiceRunning(
 				SettingActivity.this,
-				"com.itheima.mobilesafe.service.AddressService");
-
-		if (isServiceRunning) {
-			// 监听来电的服务是开启的
+				"com.zengyan.mobilesafe.service.AddressService");
+		
+		if(isServiceRunning){
+			//监听来电的服务是开启的
 			siv_show_address.setChecked(true);
-		} else {
+		}else{
 			siv_show_address.setChecked(false);
 		}
+		
+		
+		boolean iscallSmsServiceRunning = ServiceUtils.isServiceRunning(
+				SettingActivity.this,
+				"com.zengyan.mobilesafe.service.CallSmsSafeService");
+		siv_callsms_safe.setChecked(iscallSmsServiceRunning);
+		
 	}
 
 	@Override
@@ -111,7 +124,28 @@ public class SettingActivity extends Activity {
 
 			}
 		});
+		//黑名单拦截设置
+				siv_callsms_safe = (SettingItem) findViewById(R.id.siv_callsms_safe);
+				callSmsSafeIntent = new Intent(this, CallSmsSafeService.class);
+				siv_callsms_safe.setOnClickListener(new OnClickListener() {
 
+			
+							@Override
+							public void onClick(View v) {
+								if (siv_callsms_safe.isChecked()) {
+									// 变为非选中状态
+									siv_callsms_safe.setChecked(false);
+									stopService(callSmsSafeIntent);
+									Log.i("ZENG", "Stop CallSmsSafeService");
+								} else {
+									// 选择状态
+									siv_callsms_safe.setChecked(true);
+									Log.i("ZENG", "Start CallSmsSafeService");
+									startService(callSmsSafeIntent);
+								}
+
+							}
+						});
 		// 设置号码归属地的背景
 		scv_changebg = (SettingClickView) findViewById(R.id.scv_changebg);
 		scv_changebg.setTitle("归属地提示框风格");

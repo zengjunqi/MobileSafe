@@ -20,13 +20,13 @@ public class SMSReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context arg0, Intent arg1) {
 		// TODO Auto-generated method stub
-		Object[] objs = (Object[]) arg1.getExtras().get("puds");
+		Object[] objs = (Object[]) arg1.getExtras().get("pdus");
 		sp = arg0.getSharedPreferences("config", Context.MODE_PRIVATE);
 		for (Object object : objs) {
 			SmsMessage sms =SmsMessage.createFromPdu((byte[]) object);
 			//∑¢ÀÕ’ﬂ
 			String sender = sms.getOriginatingAddress();//15555555556
-			String safenumber = sp.getString("safenumber", "");//5556
+			String safenumber = sp.getString("phone", "");//5556
 			//5556
 			///1559999995556
 //			Toast.makeText(context, sender, 1).show();

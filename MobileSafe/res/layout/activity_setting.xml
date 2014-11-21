@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         itheima:desc_off="设置显示号码归属地已经关闭"
         itheima:desc_on="设置显示号码归属地已经开启"
-        itheima:title="设置显示号码归属地" >
+        itheima:titletext="设置显示号码归属地" >
     </com.zengyan.mobilesafe.ui.SettingItem>
 
     <com.zengyan.mobilesafe.ui.SettingClickView
@@ -38,6 +38,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
     </com.zengyan.mobilesafe.ui.SettingClickView>
+    
+        <com.zengyan.mobilesafe.ui.SettingItem
+        android:id="@+id/siv_callsms_safe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        itheima:desc_off="黑名单拦截已经关闭"
+        itheima:desc_on="黑名单拦截已经开启"
+        itheima:titletext="黑名单拦截设置" >
+    </com.zengyan.mobilesafe.ui.SettingItem>
    
 
 </LinearLayout>

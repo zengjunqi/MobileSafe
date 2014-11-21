@@ -54,7 +54,7 @@ protected void onCreate(Bundle savedInstanceState) {
 	adapter = new MyAdapter();
 	list_home.setAdapter(adapter);
 	list_home.setOnItemClickListener(new OnItemClickListener() {
-
+		Intent intents;
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id) {
@@ -67,8 +67,12 @@ protected void onCreate(Bundle savedInstanceState) {
 			case 0://进入手机防盗页面
 				showLostFindDialog();
 				break;
+			case 1://进入高级工具
+				 intents = new Intent(HomeActivity.this,CallSmsSafeActivity.class);
+				startActivity(intents);
+				break;
 			case 7://进入高级工具
-				Intent intents = new Intent(HomeActivity.this,AtoolsActivity.class);
+				 intents = new Intent(HomeActivity.this,AtoolsActivity.class);
 				startActivity(intents);
 				break;
 			default:

@@ -20,6 +20,12 @@
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+        <uses-permission android:name="android.permission.CALL_PHONE"/>
+        <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+        <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+        <uses-permission android:name="android.permission.READ_SMS"/>
+        <uses-permission android:name="android.permission.WRITE_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -71,7 +77,7 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.zengyan.mobilesafe.receiver.SMSReceiver" >
-            <intent-filter android:priority="1000" >
+            <intent-filter  >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
@@ -94,6 +100,8 @@
 
         <service android:name="com.zengyan.mobilesafe.service.AddressService" />
         <service android:name="com.zengyan.mobilesafe.service.GPSService" />
+          <service android:name="com.zengyan.mobilesafe.service.CallSmsSafeService" />
+          <activity android:name="com.zengyan.mobilesafe.CallSmsSafeActivity"></activity>
     </application>
 
 </manifest>
