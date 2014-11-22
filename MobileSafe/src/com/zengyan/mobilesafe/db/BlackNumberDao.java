@@ -76,7 +76,34 @@ public class BlackNumberDao {
 		db.close();
 		return result;
 	}
-	
+	/**
+	 * 查询全部黑名单号码
+	 * @offset 从哪个位置开始获取
+	 * @maxno 最多获取多少条记录
+	 * @return
+	 */
+	public List<BlackNumberInfo> findPart(int offset,int maxno){
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<BlackNumberInfo> result = new ArrayList<BlackNumberInfo>();
+		SQLiteDatabase db = helper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select number,mode from blacknumber order by _id desc limit ? offset ?", new String[]{String.valueOf(maxno),String.valueOf(offset)});
+		while(cursor.moveToNext()){
+			BlackNumberInfo info = new BlackNumberInfo();
+			String number = cursor.getString(0);
+			String mode = cursor.getString(1);
+			info.setMode(mode);
+			info.setNumber(number);
+			result.add(info);
+		}
+		cursor.close();
+		db.close();
+		return result;
+	}
 	
 	/**
 	 * 添加黑名单号码

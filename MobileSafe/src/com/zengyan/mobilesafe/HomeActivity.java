@@ -71,6 +71,10 @@ protected void onCreate(Bundle savedInstanceState) {
 				 intents = new Intent(HomeActivity.this,CallSmsSafeActivity.class);
 				startActivity(intents);
 				break;
+			case 2://进入高级工具
+				 intents = new Intent(HomeActivity.this,AppManagerActivity.class);
+				startActivity(intents);
+				break;
 			case 7://进入高级工具
 				 intents = new Intent(HomeActivity.this,AtoolsActivity.class);
 				startActivity(intents);
