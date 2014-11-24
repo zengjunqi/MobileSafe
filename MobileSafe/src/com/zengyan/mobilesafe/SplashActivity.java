@@ -17,9 +17,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -152,6 +154,7 @@ public class SplashActivity extends ActionBarActivity {
 		alphaAnimation.setFillAfter(true);
 
 		rlLayout.setAnimation(alphaAnimation);
+		installShortCut();
 
 	}
 	/**
@@ -426,4 +429,27 @@ public class SplashActivity extends ActionBarActivity {
 		}
 	}
 
+	private void installShortCut() {
+		 boolean shortcut=sp.getBoolean("shortcut", false);
+		 if (shortcut) {
+			return;
+		}
+		
+		Intent intent=new Intent();
+		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, " ÷ª˙Œ¿ ø");
+		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+		Intent shortIntent=new Intent();
+		shortIntent.setAction("android.intent.action.MAIN");
+		shortIntent.addCategory("android.intent.category.LAUNCHER");
+		shortIntent.setClassName(getPackageName(), "com.zengyan.mobilesafe.SplashActivity");
+		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortIntent);
+		sendBroadcast(intent);
+		
+		Editor editor=sp.edit();
+		editor.putBoolean("shortcut", true);
+		editor.commit();
+		
+	}
+	
 }

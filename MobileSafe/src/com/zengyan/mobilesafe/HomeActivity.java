@@ -67,12 +67,16 @@ protected void onCreate(Bundle savedInstanceState) {
 			case 0://进入手机防盗页面
 				showLostFindDialog();
 				break;
-			case 1://进入高级工具
+			case 1://进入
 				 intents = new Intent(HomeActivity.this,CallSmsSafeActivity.class);
 				startActivity(intents);
 				break;
-			case 2://进入高级工具
+			case 2://进入具
 				 intents = new Intent(HomeActivity.this,AppManagerActivity.class);
+				startActivity(intents);
+				break;
+			case 3://进入
+				 intents = new Intent(HomeActivity.this,TaskManagerActivity.class);
 				startActivity(intents);
 				break;
 			case 7://进入高级工具
