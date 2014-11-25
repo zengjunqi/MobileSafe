@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 
 import com.zengyan.mobilesafe.service.AddressService;
 import com.zengyan.mobilesafe.service.CallSmsSafeService;
+import com.zengyan.mobilesafe.service.WatchDogService;
 import com.zengyan.mobilesafe.ui.SettingClickView;
 import com.zengyan.mobilesafe.ui.SettingItem;
 import com.zengyan.mobilesafe.utils.ServiceUtils;
@@ -26,35 +27,42 @@ public class SettingActivity extends Activity {
 	private SettingItem siv_show_address;
 	private Intent showAddress;
 
-	//黑名单拦截设置
+	// 黑名单拦截设置
 	private SettingItem siv_callsms_safe;
 	private Intent callSmsSafeIntent;
-	
-	
-	//设置归属地显示框背景
+
+	// 黑名单拦截设置
+	private SettingItem siv_watchdog;
+	private Intent callWatchDog;
+	// 设置归属地显示框背景
 	private SettingClickView scv_changebg;
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		showAddress = new Intent(this, AddressService.class);
+	
 		boolean isServiceRunning = ServiceUtils.isServiceRunning(
 				SettingActivity.this,
 				"com.zengyan.mobilesafe.service.AddressService");
-		
-		if(isServiceRunning){
-			//监听来电的服务是开启的
+
+		if (isServiceRunning) {
+			// 监听来电的服务是开启的
 			siv_show_address.setChecked(true);
-		}else{
+		} else {
 			siv_show_address.setChecked(false);
 		}
-		
-		
+
 		boolean iscallSmsServiceRunning = ServiceUtils.isServiceRunning(
 				SettingActivity.this,
 				"com.zengyan.mobilesafe.service.CallSmsSafeService");
 		siv_callsms_safe.setChecked(iscallSmsServiceRunning);
-		
+
+		boolean isWatchDogRunning = ServiceUtils.isServiceRunning(
+				SettingActivity.this,
+				"com.zengyan.mobilesafe.service.WatchDogService");
+		siv_watchdog.setChecked(isWatchDogRunning);
+
 	}
 
 	@Override
@@ -95,17 +103,6 @@ public class SettingActivity extends Activity {
 		// 设置号码归属地显示空间
 		siv_show_address = (SettingItem) findViewById(R.id.siv_show_address);
 		showAddress = new Intent(this, AddressService.class);
-		boolean isServiceRunning = ServiceUtils.isServiceRunning(
-				SettingActivity.this,
-				"com.zengyan.mobilesafe.service.AddressService");
-
-		if (isServiceRunning) {
-			// 监听来电的服务是开启的
-			siv_show_address.setChecked(true);
-		} else {
-			siv_show_address.setChecked(false);
-		}
-
 		siv_show_address.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -124,28 +121,48 @@ public class SettingActivity extends Activity {
 
 			}
 		});
-		//黑名单拦截设置
-				siv_callsms_safe = (SettingItem) findViewById(R.id.siv_callsms_safe);
-				callSmsSafeIntent = new Intent(this, CallSmsSafeService.class);
-				siv_callsms_safe.setOnClickListener(new OnClickListener() {
+		// 黑名单拦截设置
+		siv_callsms_safe = (SettingItem) findViewById(R.id.siv_callsms_safe);
+		callSmsSafeIntent = new Intent(this, CallSmsSafeService.class);
+		siv_callsms_safe.setOnClickListener(new OnClickListener() {
 
-			
-							@Override
-							public void onClick(View v) {
-								if (siv_callsms_safe.isChecked()) {
-									// 变为非选中状态
-									siv_callsms_safe.setChecked(false);
-									stopService(callSmsSafeIntent);
-									Log.i("ZENG", "Stop CallSmsSafeService");
-								} else {
-									// 选择状态
-									siv_callsms_safe.setChecked(true);
-									Log.i("ZENG", "Start CallSmsSafeService");
-									startService(callSmsSafeIntent);
-								}
+			@Override
+			public void onClick(View v) {
+				if (siv_callsms_safe.isChecked()) {
+					// 变为非选中状态
+					siv_callsms_safe.setChecked(false);
+					stopService(callSmsSafeIntent);
+					Log.i("ZENG", "Stop CallSmsSafeService");
+				} else {
+					// 选择状态
+					siv_callsms_safe.setChecked(true);
+					Log.i("ZENG", "Start CallSmsSafeService");
+					startService(callSmsSafeIntent);
+				}
 
-							}
-						});
+			}
+		});
+		// 设置号码归属地显示空间
+				siv_watchdog = (SettingItem) findViewById(R.id.siv_watchdog);
+				callWatchDog = new Intent(this, WatchDogService.class);
+				siv_watchdog.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (siv_watchdog.isChecked()) {
+							// 变为非选中状态
+							siv_watchdog.setChecked(false);
+							stopService(callWatchDog);
+
+						} else {
+							// 选择状态
+							siv_watchdog.setChecked(true);
+							startService(callWatchDog);
+
+						}
+
+					}
+				});
 		// 设置号码归属地的背景
 		scv_changebg = (SettingClickView) findViewById(R.id.scv_changebg);
 		scv_changebg.setTitle("归属地提示框风格");

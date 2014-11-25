@@ -25,6 +25,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zengyan.mobilesafe.db.AppLockDao;
 import com.zengyan.mobilesafe.engine.AppInfoProvider;
 import com.zengyan.mobilesafe.model.AppInfo;
 import com.zengyan.mobilesafe.utils.DensityUtil;
@@ -52,6 +54,9 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	private LinearLayout ll_start;
 	private LinearLayout ll_share;
 	private LinearLayout ll_uninstall;
+	private AppLockDao dbhelper;
+
+	// private ImageView iv_status;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 				.getAbsolutePath());
 		tvme.setText("内存可用空间:" + Formatter.formatFileSize(this, romsize));
 		tvsd.setText("SD可用空间:" + Formatter.formatFileSize(this, sdsize));
-
+		dbhelper = new AppLockDao(this);
 		ll.setVisibility(View.VISIBLE);
 
 		fillData();
@@ -127,7 +132,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 				 * contentView.setTextColor(Color.BLACK);
 				 */
 				int dip = 60;
-				int px = DensityUtil.dip2px(getApplicationContext(), dip);//转换成px
+				int px = DensityUtil.dip2px(getApplicationContext(), dip);// 转换成px
 				View contentView = View.inflate(getApplicationContext(),
 						R.layout.popup_app_item, null);
 				ll_start = (LinearLayout) contentView
@@ -164,6 +169,36 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 
 			}
 
+		});
+		lvListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				if (position == 0) {
+					return true;// 返回true,代表这个事件到当前截止了,事件中止,不会在触发其他事件,如false则后面有事件也会继续触发
+				} else if (position == userAppinfos.size() + 1) {
+					return true;
+				} else if (position <= userAppinfos.size()) {
+					int newposition = position - 1;
+					appInfo = userAppinfos.get(newposition);
+
+				} else {
+					int newposition = position - 1 - userAppinfos.size() - 1;
+					appInfo = systemAppinfos.get(newposition);
+				}
+				ViewHolder holder=(ViewHolder) view.getTag();
+				if (dbhelper.find(appInfo.getPackname())) {
+					dbhelper.delete(appInfo.getPackname());
+					holder.iv_status.setImageResource(R.drawable.unlock);
+				} else {
+					dbhelper.add(appInfo.getPackname());
+					holder.iv_status.setImageResource(R.drawable.lock);
+				}
+
+				return true;
+			}
 		});
 
 	}
@@ -273,6 +308,8 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 				holder.location = (TextView) view
 						.findViewById(R.id.tv_app_location);
 				holder.name = (TextView) view.findViewById(R.id.tv_app_name);
+				holder.iv_status = (ImageView) view
+						.findViewById(R.id.iv_status);
 				view.setTag(holder);
 			}
 			// info = appinfos.get(position);
@@ -284,6 +321,11 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 			} else {
 				holder.location.setText("外部存储");
 			}
+			if (dbhelper.find(info.getPackname())) {
+				holder.iv_status.setImageResource(R.drawable.lock);
+			} else {
+				holder.iv_status.setImageResource(R.drawable.unlock);
+			}
 
 			return view;
 		}
@@ -291,7 +333,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	}
 
 	static class ViewHolder {
-		ImageView icon;
+		ImageView icon, iv_status;
 		TextView name, location;
 
 	}
@@ -318,10 +360,11 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 		case R.id.ll_uninstall:
 			if (appInfo.isUserApp()) {
 				uninstallApplication();
-			}else {
-				Toast.makeText(getApplicationContext(), "系统应用必须要有root权限才能卸载", 0).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "系统应用必须要有root权限才能卸载", 0)
+						.show();
 			}
-			
+
 			break;
 
 		default:

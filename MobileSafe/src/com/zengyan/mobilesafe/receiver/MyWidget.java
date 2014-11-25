@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 public class MyWidget extends AppWidgetProvider {
 	
 	@Override
@@ -28,6 +29,7 @@ public class MyWidget extends AppWidgetProvider {
 	public void onDisabled(Context context) {
 		Intent intent = new Intent(context,UpdateWidgetService.class);
 		context.stopService(intent);
+		Log.i("ZENG", "onDisabled");
 		super.onDisabled(context);
 	}
 }
