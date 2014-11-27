@@ -59,11 +59,7 @@ protected void onCreate(Bundle savedInstanceState) {
 		public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id) {
 			switch (position) {
-			case 8://进入设置中心
-				Intent intent = new Intent(HomeActivity.this,SettingActivity.class);
-				startActivity(intent);
-				
-				break;
+
 			case 0://进入手机防盗页面
 				showLostFindDialog();
 				break;
@@ -79,9 +75,21 @@ protected void onCreate(Bundle savedInstanceState) {
 				 intents = new Intent(HomeActivity.this,TaskManagerActivity.class);
 				startActivity(intents);
 				break;
+			case 4://进入
+				 intents = new Intent(HomeActivity.this,TrafficManagerActivity.class);
+				startActivity(intents);
+				break;
+			case 6://进入
+				 intents = new Intent(HomeActivity.this,CleanActivity.class);
+				startActivity(intents);
+				break;
 			case 7://进入高级工具
 				 intents = new Intent(HomeActivity.this,AtoolsActivity.class);
 				startActivity(intents);
+				break;
+			case 8://进入设置中心
+				Intent intent = new Intent(HomeActivity.this,SettingActivity.class);
+				startActivity(intent);
 				break;
 			default:
 				break;

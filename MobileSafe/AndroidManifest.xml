@@ -34,6 +34,8 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" /> <!-- 杀死进程 -->
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 获得进程 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"/>
+
 
     <application
         android:allowBackup="true"
@@ -127,7 +129,10 @@
           android:launchMode="singleInstance" 
           android:excludeFromRecents="true"  >
         </activity>
-
+ 		 <activity android:name="com.zengyan.mobilesafe.TrafficManagerActivity" >
+        </activity>
+         <activity android:name="com.zengyan.mobilesafe.CleanActivity" >
+        </activity>
         <receiver android:name="com.zengyan.mobilesafe.receiver.MyWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

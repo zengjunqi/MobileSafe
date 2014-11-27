@@ -9,6 +9,13 @@ public class AppInfo {
 	private String packname;
 	private boolean inRom;
 	private boolean userApp;
+	public String getTraffic() {
+		return traffic;
+	}
+	public void setTraffic(String traffic) {
+		this.traffic = traffic;
+	}
+	private String traffic;
 	public Drawable getIcon() {
 		return icon;
 	}
